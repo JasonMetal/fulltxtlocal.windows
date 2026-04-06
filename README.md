@@ -54,63 +54,14 @@
 
 ## 🚀 快速开始
 
-### 方式一：直接运行（推荐）
+### 方式：直接运行（推荐）
 
 1. **下载可执行文件**：`FullTXTLocal-v1.1.2.exe`（约 22MB）
 2. **双击运行**：启动后自动打开主界面
 3. **添加索引目录**：进入"索引目录管理"添加需要索引的文件夹
 4. **开始搜索**：等待索引完成后即可搜索
 
-### 方式二：从源码构建
 
-#### 前置要求
-
-- **Go** >= 1.25：https://go.dev/dl/
-- **Node.js** >= 16：https://nodejs.org/
-- **Wails CLI** >= 2.12：`go install github.com/wailsapp/wails/v2/cmd/wails@latest`
-
-#### 构建步骤
-
-```bash
-# 1. 克隆项目
-git clone <repository-url>
-cd fulltextlocal-go
-
-# 2. 安装前端依赖
-cd frontend
-npm install
-cd ..
-
-# 3. 安装 Go 依赖
-cd backend
-go mod tidy
-cd ..
-
-# 4. 构建应用
-.\build.bat
-# 或手动构建
-cd backend
-wails build -platform windows/amd64
-```
-
-#### 构建产物
-
-编译后的文件位于：`build\bin\FullTXTLocal.exe`
-
-#### 开发模式
-
-```bash
-cd backend
-wails dev
-```
-
-开发模式特性：
-- ✅ 自动打开窗口
-- ✅ 前端修改自动热重载
-- ✅ Go 代码修改自动重启
-- ✅ 支持浏览器 DevTools（F12 调试）
-
----
 
 ## 📂 支持格式
 
@@ -130,18 +81,12 @@ wails dev
 
 ### 1️⃣ 添加索引目录
 
-**方法 1：通过界面**
+**方法 ：通过界面**
 1. 点击底部 **「索引目录管理」** → **「展开」**
 2. 粘贴文件夹路径或点击 **「选择文件夹」** 按钮
 3. 点击 **「添加」**，程序会自动扫描并建立索引
 
-**方法 2：通过 API**
-```bash
-curl -X POST http://localhost:9922/api/dirs ^
-  -H "Content-Type: application/json" ^
-  -d "{\"path\":\"D:\\Documents\"}"
-```
-
+ 
 ### 2️⃣ 搜索文件
 
 1. 在顶部搜索框输入关键词
@@ -200,21 +145,21 @@ curl -X POST http://localhost:9922/api/dirs ^
 ### 技巧 1：组合搜索
 使用空格分隔多个关键词：
 ```
-观音山 花名册
+张三 花名册
 ```
-→ 同时包含"观音山"和"花名册"的文档
+→ 同时包含"张三"和"花名册"的文档
 
 ### 技巧 2：利用文件名权重
 文件名匹配权重是内容的 2 倍：
 - 搜索"报告" → 优先显示文件名包含"报告"的文档
-- 搜索"2024 总结" → 优先显示文件名包含这些词的文档
+- 搜索"2026 总结" → 优先显示文件名包含这些词的文档
 
-### 技巧 3：正则表达式示例
+### ~~技巧 3：正则表达式示例~~ （暂不开放）
 
 | 模式 | 说明 | 示例 |
 |------|------|------|
 | `你好.*世界` | 匹配"你好"和"世界"之间的内容 | 你好，美丽的世界 |
-| `\d{4}-\d{2}-\d{2}` | 匹配日期格式 YYYY-MM-DD | 2024-01-15 |
+| `\d{4}-\d{2}-\d{2}` | 匹配日期格式 YYYY-MM-DD | 2026-01-15 |
 | `\d+` | 匹配一个或多个数字 | 12345 |
 | `[A-Za-z]+` | 匹配英文字母 | Hello |
 
@@ -246,59 +191,7 @@ curl -X POST http://localhost:9922/api/dirs ^
 
 - **后端**：Go 1.25
 - **前端**：JavaScript (Vue 3 SFC)
-
----
-
-## 📁 项目结构
-
-```
-fulltextlocal-go/
-├── backend/                    # 后端 Go 代码
-│   ├── main_wails.go           # Wails 桌面应用主入口
-│   ├── main_web.go             # Web 服务器入口（可选）
-│   ├── app.go                  # 应用核心逻辑（Wails 服务）
-│   ├── app_lifecycle.go        # 生命周期管理
-│   ├── tray.go                 # 系统托盘
-│   ├── utils_windows.go        # Windows 工具函数
-│   ├── wails.json              # Wails 配置文件
-│   ├── go.mod                  # Go 模块定义
-│   ├── api/                    # HTTP API（Web 模式使用）
-│   │   └── handler.go          # HTTP 路由与处理
-│   ├── internal/               # 内部包
-│   │   ├── indexer/            # Bleve 全文索引引擎
-│   │   │   └── indexer.go
-│   │   ├── parser/             # 文件解析器
-│   │   │   └── parser.go
-│   │   └── watcher/            # 文件变更监听
-│   │       └── watcher.go
-│   └── build/                  # 构建输出
-│       └── bin/
-│           └── FullTXTLocal.exe
-├── frontend/                   # 前端 Vue 3 代码
-│   ├── src/
-│   │   ├── main.js             # 前端入口
-│   │   ├── App.vue             # 主应用组件
-│   │   └── components/         # Vue 组件
-│   │       ├── Header.vue          # 应用头部（含帮助按钮）
-│   │       ├── SearchSection.vue   # 搜索区域
-│   │       ├── ResultsSection.vue  # 结果展示区
-│   │       ├── DirectoryManager.vue # 目录管理
-│   │       ├── AboutModal.vue      # 关于/帮助对话框
-│   │       └── DonateModal.vue     # 捐赠弹窗
-│   ├── dist/                   # 构建产物（嵌入到 exe）
-│   ├── public/                 # 静态资源
-│   │   └── about.html          # 帮助页面内容
-│   ├── package.json            # npm 依赖配置
-│   └── vite.config.js          # Vite 配置
-├── build.bat                   # 一键构建脚本
-├── cleanup-port.ps1            # 端口清理脚本
-├── README.md                   # 项目说明（本文件）
-├── 使用说明.md                 # 用户使用手册
-├── 使用指南.md                 # 技术使用指南
-├── PROJECT_STRUCTURE.md        # 项目结构说明
-└── QUICKSTART.md               # 快速开始指南
-```
-
+ 
 ---
 
 ## ❓ 常见问题
@@ -331,13 +224,7 @@ fulltextlocal-go/
 
 ## 🤝 贡献指南
 
-欢迎提交 Issue 和 Pull Request！
-
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 提交 Pull Request
+欢迎提交 Issue  
 
 ---
 
