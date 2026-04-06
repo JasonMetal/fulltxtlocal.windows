@@ -114,7 +114,7 @@
 
 ### 自定义索引存储路径
 
-默认索引存储在：`%USERPROFILE%\.fulltextlocal-go\bleve.db`
+默认索引存储在：`%USERPROFILE%\.fulltxtlocal-go\bleve.db`
 
 **指定到其他位置**（如 D 盘）:
 ```bash
@@ -136,7 +136,7 @@
 
 ### 索引数据清理
 
-删除 `%USERPROFILE%\.fulltextlocal-go\` 文件夹即可重置所有索引。
+删除 `%USERPROFILE%\.fulltxtlocal-go\` 文件夹即可重置所有索引。
 
 ---
 
