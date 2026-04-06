@@ -1,0 +1,16 @@
+# Binaries for programs and plugins
+*.dll
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+
+# Develop tools
+.vscode/
+.idea/
+.run/
+*.swp
+/.*/
+
+
